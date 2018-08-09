@@ -15,6 +15,7 @@ const dest    = join(root, 'dist');
 
 const NODE_ENV = process.env.NODE_ENV;
 const isDev = NODE_ENV === 'development';
+const cssModulesNames = `${isDev ? '[path][name]__[local]__' : ''}[hash:base64:5]`;
 
 // The hjs-webpack package exports a single function that accepts a single argument, 
 //  an object that defines some simple configuration to define a required webpack configuration. 
@@ -29,5 +30,30 @@ var config = getConfig({
     // Turn this on to clear away any strangling files from previous builds.
     clearBeforeBuild: true
 })
+const matchCssLoaders = /(^|!)(css-loader)($|!)/;
+
+//loaders has to be array, found = array
+const findLoader = (loaders, match) => {
+const found = loaders.filter(l => 
+    l && l.use && l.use[1] && l.use[1].match(match)
+    );
+  return found ? found[0] : null;
+}
+// existing css loader
+const cssloader = findLoader(config.module.rules, matchCssLoaders);
+const newloader = Object.assign({}, cssloader, {
+    test: /\.module\.css$/,
+    use: [
+        {
+            loader: cssloader.use[1]
+            .replace(matchCssLoaders,
+                    `$1$2?modules&localIdentName=${cssModulesNames}$3`)
+        }
+    ]
+})
+
+config.module.rules.push(newloader);
+cssloader.test = new RegExp(`[^module]${cssloader.test.source}`)
+cssloader.loader = newloader.loader
 
 module.exports = config;

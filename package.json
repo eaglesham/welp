@@ -4,11 +4,13 @@
   "description": "yelp clone",
   "main": "webpack.config.js",
   "scripts": {
+    "start": "NODE_ENV=development ./node_modules/.bin/hjs-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "eaglesham",
   "license": "ISC",
   "devDependencies": {
+    "autoprefixer": "^9.1.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-es2015": "^6.24.1",
@@ -16,11 +18,18 @@
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^1.0.0",
+    "cssnano": "^4.0.5",
     "file-loader": "^1.1.11",
     "hjs-webpack": "^9.2.0",
     "postcss-loader": "^2.1.6",
+    "precss": "^3.1.2",
     "style-loader": "^0.22.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.16.5"
+  },
+  "dependencies": {
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-router": "^4.3.1"
   }
 }
